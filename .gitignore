@@ -4,3 +4,7 @@ dist
 *.local
 
 *.tsbuildinfo
+
+# macOS app build output
+mac/.build
+mac/build
