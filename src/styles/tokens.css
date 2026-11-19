@@ -5,6 +5,9 @@
   --mono: 'SF Mono', ui-monospace, 'JetBrains Mono', Menlo, monospace;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --arrive: cubic-bezier(0.22, 0.61, 0.2, 1);
+  --lift: cubic-bezier(0.3, 1.32, 0.5, 1);
+  --glide: cubic-bezier(0.22, 1, 0.36, 1);
   --gutter: clamp(20px, 5vw, 72px);
   --max: 1200px;
   --r-lg: 30px;
@@ -14,13 +17,15 @@
 }
 
 html[data-theme='screen'] {
-  --page: #fbfbfd;
-  --panel: #f5f5f7;
-  --panel-2: #eeeef2;
+  --page: #f5f5f7;
+  --bg: #f5f5f7;
+  --bg-alt: #ededf0;
+  --panel: #ffffff;
+  --panel-2: #f5f5f7;
   --ink: #0b0b0c;
-  --soft: #5b5b62;
+  --soft: #55555a;
   --faint: #86868b;
-  --line: rgba(0, 0, 0, 0.09);
+  --line: rgba(0, 0, 0, 0.07);
   --line-strong: rgba(0, 0, 0, 0.16);
   --btn: #0b0b0c;
   --btn-ink: #ffffff;
@@ -30,7 +35,9 @@ html[data-theme='screen'] {
 }
 
 html[data-theme='studio'] {
-  --page: #0a0a0b;
+  --page: #0b0b0c;
+  --bg: #0b0b0c;
+  --bg-alt: #111113;
   --panel: #161618;
   --panel-2: #1d1d20;
   --ink: #f5f5f7;
@@ -101,8 +108,9 @@ h1,
 h2,
 h3 {
   font-weight: 600;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.045em;
   line-height: 1.03;
+  text-wrap: balance;
 }
 p {
   text-wrap: pretty;
@@ -111,7 +119,8 @@ em {
   font-family: var(--serif);
   font-style: italic;
   font-weight: 400;
-  letter-spacing: -0.005em;
+  letter-spacing: -0.022em;
+  line-height: 0.9;
 }
 ::selection {
   background: rgba(110, 163, 224, 0.32);
@@ -129,7 +138,7 @@ em {
   letter-spacing: -0.042em;
 }
 .h2 em {
-  font-size: 1.04em;
+  font-size: 1.2em;
 }
 .h3 {
   font-size: clamp(20px, 2vw, 26px);
@@ -137,6 +146,7 @@ em {
 }
 .lede {
   font-size: clamp(16px, 1.35vw, 20px);
+  text-wrap: pretty;
   line-height: 1.5;
   color: var(--soft);
   max-width: 46ch;
