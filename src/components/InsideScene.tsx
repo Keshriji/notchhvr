@@ -111,14 +111,21 @@ export function InsideScene() {
 
         <div className="inside-grid">
           {insideItems.map((item, index) => (
-            <button
+            <div
               key={item.id}
-              type="button"
+              role="button"
+              tabIndex={0}
               className="inside-card"
               onClick={() => setOpen(index)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault()
+                  setOpen(index)
+                }
+              }}
               aria-haspopup="dialog"
             >
-              <span className="inside-thumb">
+              <span className="inside-thumb" inert>
                 <Thumb kind={item.kind} />
               </span>
               <span className="inside-meta">
@@ -128,7 +135,7 @@ export function InsideScene() {
               <span className="inside-open" aria-hidden="true">
                 <Icon name="expand" size={13} />
               </span>
-            </button>
+            </div>
           ))}
         </div>
       </div>

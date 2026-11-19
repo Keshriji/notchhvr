@@ -15,6 +15,8 @@ export function BuyDialog({ open, onClose }: { open: boolean; onClose: () => voi
   const ref = useRef<HTMLDialogElement>(null)
   const [email, setEmail] = useState('')
   const [code, setCode] = useState<string | null>(null)
+  const closeRef = useRef(onClose)
+  closeRef.current = onClose
 
   useEffect(() => {
     const dialog = ref.current
@@ -22,6 +24,16 @@ export function BuyDialog({ open, onClose }: { open: boolean; onClose: () => voi
     if (open && !dialog.open) dialog.showModal()
     if (!open && dialog.open) dialog.close()
   }, [open])
+
+  // Escape closes the native dialog without going through React, which would
+  // otherwise leave `open` true and swallow the Space/T shortcuts.
+  useEffect(() => {
+    const dialog = ref.current
+    if (!dialog) return
+    const handleClose = () => closeRef.current()
+    dialog.addEventListener('close', handleClose)
+    return () => dialog.removeEventListener('close', handleClose)
+  }, [])
 
   useEffect(() => {
     if (!open) {
@@ -35,7 +47,6 @@ export function BuyDialog({ open, onClose }: { open: boolean; onClose: () => voi
       ref={ref}
       className="buy-dialog"
       aria-labelledby="buy-title"
-      onClose={onClose}
       onClick={(event) => {
         if (event.target === ref.current) onClose()
       }}

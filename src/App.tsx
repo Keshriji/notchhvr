@@ -19,7 +19,7 @@ function readTheme(): Theme {
   if (typeof window === 'undefined') return 'screen'
   const stored = window.localStorage.getItem('notchhvr-theme')
   if (stored === 'screen' || stored === 'studio') return stored
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'studio' : 'screen'
+  return 'screen'
 }
 
 function readRoute(): string {
@@ -85,8 +85,9 @@ function Page() {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null
+      const modalOpen = document.querySelector('dialog[open]') !== null
       const typing =
-        target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable || buyOpen
+        target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable || modalOpen
       if (event.key === ' ' && !typing) {
         event.preventDefault()
         player.toggle()
@@ -97,7 +98,7 @@ function Page() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [player, buyOpen])
+  }, [player])
 
   const pageProps: PageProps = {
     theme,

@@ -39,16 +39,12 @@ export function ScrollHero({
       setProgress(0.34)
       return
     }
-    let frame = 0
     const measure = () => {
-      cancelAnimationFrame(frame)
-      frame = requestAnimationFrame(() => {
-        const el = section.current
-        if (!el) return
-        const total = el.offsetHeight - window.innerHeight
-        const top = el.getBoundingClientRect().top
-        setProgress(total > 0 ? Math.min(1, Math.max(0, -top / total)) : 0)
-      })
+      const el = section.current
+      if (!el) return
+      const total = el.offsetHeight - window.innerHeight
+      const top = el.getBoundingClientRect().top
+      setProgress(total > 0 ? Math.min(1, Math.max(0, -top / total)) : 0)
     }
     measure()
     window.addEventListener('scroll', measure, { passive: true })
@@ -56,7 +52,6 @@ export function ScrollHero({
     return () => {
       window.removeEventListener('scroll', measure)
       window.removeEventListener('resize', measure)
-      cancelAnimationFrame(frame)
     }
   }, [reduced])
 
@@ -64,7 +59,7 @@ export function ScrollHero({
   const stage = p < 0.24 ? 0 : p < 0.42 ? 1 : p < 0.58 ? 2 : p < 0.74 ? 3 : 4
   const screen: ScreenName = stage <= 1 ? 'island' : stage === 2 ? 'lock' : stage === 3 ? 'desktop' : 'lyrics'
   const zoom = 0.84 + Math.min(p, 0.86) * 0.46
-  const captionIndex = Math.max(0, stage - 2)
+  const captionIndex = Math.min(captions.length - 1, stage)
   const copyFade = Math.max(0, 1 - p * 3.6)
   const finalFade = p < 0.82 ? 0 : Math.min(1, (p - 0.82) * 5)
 
@@ -168,10 +163,8 @@ export function ScrollHero({
           <div className="hero-stage-shadow" aria-hidden="true" />
         </div>
 
-        <div className={cx('sh-caption', stage >= 2 && 'on')} aria-live="polite">
-          <span className="sh-step">
-            {String(Math.min(stage - 1, 4)).padStart(2, '0')} / 04
-          </span>
+        <div className={cx('sh-caption', stage >= 2 && 'on')} aria-hidden={stage < 2} aria-live="polite">
+          <span className="sh-step">{String(Math.min(stage + 1, 4)).padStart(2, '0')} / 04</span>
           <h2>{captions[captionIndex].key}</h2>
           <p>{captions[captionIndex].value}</p>
         </div>
